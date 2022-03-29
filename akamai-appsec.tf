@@ -1,20 +1,4 @@
-/*
-locals {
-  csv_data = file("output_for_terraform.txt")
-  country_code = csvdecode(local.csv_data)
-}
-*/
-resource "null_resource" "network_list_extraction_script" {
- provisioner "local-exec" {
-#   command = "chmod +x extract_country_code.txt"
-   command = "/bin/bash ${path.module}/extract_country_code_new.txt >> ${path.module}/output_for_terraform_new.txt"
-  }
-}
 
-data "local_file" "output_for_terraform" {
-    filename = "${path.module}/output_for_terraform_new.txt"
-  depends_on = ["null_resource.network_list_extraction_script"]
-}
 
 resource "akamai_appsec_configuration" "akamai_appsec" {
   contract_id = replace(data.akamai_contract.contract.id, "ctr_", "")
@@ -41,13 +25,6 @@ resource "akamai_appsec_advanced_settings_pragma_header" "pragma_header" {
 }
 
 
-/*
-resource "akamai_appsec_waf_mode" "waf_mode" {
- config_id          = akamai_appsec_configuration.akamai_appsec.config_id
- security_policy_id = akamai_appsec_security_policy.security_policy.security_policy_id
- mode = "KRS"
-}
-*/
 
 resource "akamai_networklist_network_list" "IPBLOCKLIST" {
   #for_each = { for country in local.country_code : country.CountryName => country }
@@ -82,18 +59,6 @@ resource "akamai_networklist_network_list" "GEOBLOCKLIST" {
   #]
 }
 
-/*
-resource "akamai_networklist_network_list" "GEOBLOCKLIST" {
-  name = "GEOBLOCKLIST"
-  type = "GEO"
-  description = "GEOBLOCKLIST"
-  list = [upper(data.local_file.output_for_terraform.content)]
-  mode = "REPLACE"
-  depends_on = [
-    null_resource.network_list_extraction_script
-  ]
-}
-*/
 
 
 

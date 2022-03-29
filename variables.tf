@@ -51,7 +51,7 @@ variable "section" {
 
 variable "email" {
   type = list
-  default = ["djha@akamai.com"]
+  default = ["your.email@id"]
 }
 
 variable "groupName" {

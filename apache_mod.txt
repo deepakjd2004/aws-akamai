@@ -1,7 +1,7 @@
 #!/bin/sh
 sudo echo Script started > /tmp/script.log
 FILE="/tmp/index.html"
-CONFIG_FILE="/tmp/origin.renderfaster.xyz.conf"
+CONFIG_FILE="/tmp/origin.<Hostname>.conf"
 SERVER_CONFIG_FILE="/etc/apache2/conf-available/servername.conf"
 sudo /bin/cat <<EOF >$FILE
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -22,10 +22,10 @@ EOF
 
 sudo /bin/cat <<EOF >$CONFIG_FILE
 <VirtualHost *:80>
-ServerAdmin admin@origin.renderfaster.xyz
-ServerName origin.renderfaster.xyz
-ServerAlias origin.renderfaster.xyz
-DocumentRoot /var/www/origin.renderfaster.xyz/html
+ServerAdmin admin@origin.<Hostname>
+ServerName origin.<Hostname>
+ServerAlias origin.<Hostname>
+DocumentRoot /var/www/origin.<Hostname>/html
 ErrorLog ${APACHE_LOG_DIR}/error.log
 CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
@@ -36,14 +36,14 @@ sudo yum install -y httpd
 sudo cp $FILE  /var/www/html/index.html
 sudo systemctl enable httpd
 sudo systemctl start httpd
-#Setting up new site renderfaster.xyz
-sudo mkdir -p /var/www/origin.renderfaster.xyz/html
-sudo chown -R $USER:$USER /var/www/origin.renderfaster.xyz/html
-sudo chmod -R 755 /var/www/origin.renderfaster.xyz
-sudo cp $FILE /var/www/origin.renderfaster.xyz/html/index.html
+#Setting up new site <Hostname>
+sudo mkdir -p /var/www/origin.<Hostname>/html
+sudo chown -R $USER:$USER /var/www/origin.<Hostname>/html
+sudo chmod -R 755 /var/www/origin.<Hostname>
+sudo cp $FILE /var/www/origin.<Hostname>/html/index.html
 sudo cp $CONFIG_FILE /etc/apache2/sites-available
-sudo a2ensite /etc/apache2/sites-available/origin.renderfaster.xyz.config
+sudo a2ensite /etc/apache2/sites-available/origin.<Hostname>.config
 sudo /bin/cat <<EOF >$SERVER_CONFIG_FILE
-ServerName origin.renderfaster.xyz
+ServerName origin.<Hostname>
 EOF
 sudo systemctl restart httpd

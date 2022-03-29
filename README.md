@@ -1,43 +1,20 @@
 # aws-akamai
- This repo is provisioned to store terraform examples to build a website on AWS + using Akamai as CDN and Security platform
+
+ **This repo is provisioned to store terraform examples to build a website on AWS + using Akamai as CDN and Security platform**
 
 
+![Site Architecture](Architecture_Diagram.jpg)
 
- Some pre-requisite, this post assume that you have fair bit of understanding working with terraform, akamai api's, akamai ecosystem, aws ecosystem and aws cli. Below are the important for getting started with 
- Akamai API - https://developer.akamai.com/getting-started/edgegrid
- AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
- About Terraform - https://www.terraform.io/
- Terraform - Akamai provider https://registry.terraform.io/providers/akamai/akamai/latest/docs
- Terraform - AWS provider https://registry.terraform.io/providers/hashicorp/aws/latest
 
- This repo helps with
+ **Pre-requisites**:- This post assume that you have fair bit of understanding working with terraform, Akamai api's, Akamai ecosystem, AWS ecosystem and AWS cli. Below are the important links for getting started with 
+ 1. Akamai API - https://developer.akamai.com/getting-started/edgegrid
+ 2. AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+ 3. About Terraform - https://www.terraform.io/
+ 4. Terraform - Akamai provider https://registry.terraform.io/providers/akamai/akamai/latest/docs
+ 5. Terraform - AWS provider https://registry.terraform.io/providers/hashicorp/aws/latest
 
- *Section 1 - Set up AWS API/CLI*
- Check the detailed blog
- https://medium.com/p/e2ce226231ed/ 
+**Detailed blogpost on how to provision a website on AWS and delivery it securely via. Akamai Edge Platform**
 
- *Section 2 - Setup Akamai API*
- Follow the easy steps mentioned in link below to create your api client on akamai and store .edgerc file . Make sure that you give permission to your api client to manage
- a) Akamai Edge DNS
- b) Akamai PAPI (Property Manager API)
- c) Akamai Application Security Configuration
+https://deepakjd2004.medium.com/cloud-agnostic-secure-delivery-of-a-website-on-akamai-edge-platform-using-terraform-part-i-e2ce226231ed
 
- *Section 3 - Setup Terraform*
- Install Terraform 
- Install Terraform | Terraform - HashiCorp Learn
- To use Terraform you will need to install it. HashiCorp distributes Terraform as a binary package.
-
- *Section 4 -Structure your terraform files*
- Four types of file that we are going to use within terraform ecosystem:-
- Resource specific *.tf file - provision/manage resources
- variables.tf - Variables declaration file
- terraform.tfvars - values of variables 
- Output.tf - returning details about the managed resources
- *Section 5 - Start writing terraform code*
-
- *Section 6 - Other terraform files*
-
- *Section 7 -Start Provisioning*
-
- *Section 8 - Test your website.*
-https://techdocs.akamai.com/api-acceleration/docs/test-stage
+https://medium.com/@deepakjd2004/cloud-agnostic-secure-delivery-of-a-website-on-akamai-edge-platform-using-terraform-part-ii-fd72f43bb0e8

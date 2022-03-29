@@ -1,0 +1,542 @@
+{
+  "accountId": "act_B-C-1ED34DK",
+  "contractId": "ctr_C-1ED34DY",
+  "groupId": "grp_178772",
+  "propertyId": "prp_652996",
+  "propertyVersion": 140,
+  "etag": "6c007dba20ebee0d2feb29236a6b5bee7017d596",
+  "ruleFormat": "latest",
+  "rules": {
+    "name": "default",
+    "behaviors": [
+      {
+        "name": "origin",
+        "options": {
+          "cacheKeyHostname": "REQUEST_HOST_HEADER",
+          "compress": true,
+          "enableTrueClientIp": false,
+          "forwardHostHeader": "REQUEST_HOST_HEADER",
+          "hostname": "${env.origin_value}",
+          "httpPort": 80,
+          "httpsPort": 443,
+          "originCertificate": "",
+          "originSni": true,
+          "originType": "CUSTOMER",
+          "ports": "",
+          "verificationMode": "PLATFORM_SETTINGS"
+        }
+      },
+      {
+        "name": "cpCode",
+        "options": {
+          "value": {
+            "id": "${env.cpcode_value}"
+          }
+        }
+      },
+      {
+        "name": "allowPost",
+        "options": {
+          "allowWithoutContentLength": true,
+          "enabled": true
+        }
+      },
+      {
+        "name": "realUserMonitoring",
+        "options": {
+          "enabled": true
+        }
+      },
+      {
+        "name": "setVariable",
+        "options": {
+          "extractLocation": "CLIENT_REQUEST_HEADER",
+          "headerName": "api-key",
+          "transform": "NONE",
+          "valueSource": "EXTRACT",
+          "variableName": "PMUSER_API_KEY_VALUE"
+        }
+      },
+      {
+        "name": "rapid",
+        "options": {
+          "enabled": true
+        }
+      }
+    ],
+    "children": [
+      {
+        "name": "Offload origin",
+        "behaviors": [
+          {
+            "name": "caching",
+            "options": {
+              "behavior": "NO_STORE"
+            }
+          },
+          {
+            "name": "tieredDistribution",
+            "options": {
+              "enabled": true,
+              "tieredDistributionMap": "CH2"
+            }
+          },
+          {
+            "name": "validateEntityTag",
+            "options": {
+              "enabled": false
+            }
+          },
+          {
+            "name": "removeVary",
+            "options": {
+              "enabled": false
+            }
+          },
+          {
+            "name": "cacheError",
+            "options": {
+              "enabled": true,
+              "preserveStale": true,
+              "ttl": "10s"
+            }
+          },
+          {
+            "name": "cacheKeyQueryParams",
+            "options": {
+              "behavior": "INCLUDE_ALL_ALPHABETIZE_ORDER"
+            }
+          },
+          {
+            "name": "prefreshCache",
+            "options": {
+              "enabled": true,
+              "prefreshval": 90
+            }
+          },
+          {
+            "name": "downstreamCache",
+            "options": {
+              "allowBehavior": "LESSER",
+              "behavior": "ALLOW",
+              "sendHeaders": "CACHE_CONTROL",
+              "sendPrivate": false
+            }
+          }
+        ],
+        "children": [
+          {
+            "name": "CSS and JavaScript",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "css",
+                    "js"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "71d"
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for CSS and JavaScript",
+            "criteriaMustSatisfy": "any",
+            "options": {}
+          },
+          {
+            "name": "Fonts",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "eot",
+                    "woff",
+                    "woff2",
+                    "otf",
+                    "ttf"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "30d"
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for fonts.",
+            "criteriaMustSatisfy": "any",
+            "options": {}
+          },
+          {
+            "name": "Images",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "webp",
+                    "jp2",
+                    "ico",
+                    "svg",
+                    "svgz"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "30d"
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for images.",
+            "criteriaMustSatisfy": "any",
+            "options": {}
+          },
+          {
+            "name": "Files",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "pdf",
+                    "doc",
+                    "docx",
+                    "odt"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "7d"
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for files. Files containing Personal Identified Information (PII) should require Edge authentication or not be cached at all.",
+            "criteriaMustSatisfy": "any",
+            "options": {}
+          },
+          {
+            "name": "Other static objects",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "aif",
+                    "aiff",
+                    "au",
+                    "avi",
+                    "bin",
+                    "bmp",
+                    "cab",
+                    "carb",
+                    "cct",
+                    "cdf",
+                    "class",
+                    "dcr",
+                    "dtd",
+                    "exe",
+                    "flv",
+                    "gcf",
+                    "gff",
+                    "grv",
+                    "hdml",
+                    "hqx",
+                    "ini",
+                    "mov",
+                    "mp3",
+                    "nc",
+                    "pct",
+                    "ppc",
+                    "pws",
+                    "swa",
+                    "swf",
+                    "txt",
+                    "vbs",
+                    "w32",
+                    "wav",
+                    "midi",
+                    "wbmp",
+                    "wml",
+                    "wmlc",
+                    "wmls",
+                    "wmlsc",
+                    "xsd",
+                    "zip",
+                    "pict",
+                    "tif",
+                    "tiff",
+                    "mid",
+                    "jxr",
+                    "jar"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "7d"
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for other static objects.",
+            "criteriaMustSatisfy": "any",
+            "options": {}
+          },
+          {
+            "name": "HTML pages",
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "html",
+                    "htm",
+                    "php",
+                    "jsp",
+                    "aspx",
+                    "EMPTY_STRING"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "NO_STORE"
+                }
+              },
+              {
+                "name": "cacheKeyQueryParams",
+                "options": {
+                  "behavior": "IGNORE",
+                  "exactMatch": true,
+                  "parameters": [
+                    "gclid",
+                    "fbclid",
+                    "utm_source",
+                    "utm_campaign",
+                    "utm_medium",
+                    "utm_content"
+                  ]
+                }
+              }
+            ],
+            "comments": "Override the default caching behavior for HTML pages cached on edge servers.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          },
+          {
+            "name": "Redirects",
+            "behaviors": [
+              {
+                "name": "cacheRedirect",
+                "options": {
+                  "enabled": "true"
+                }
+              },
+              {
+                "name": "chaseRedirects",
+                "options": {
+                  "enabled": false
+                }
+              }
+            ],
+            "comments": "Configure caching for HTTP redirects. The redirect is cached for the same TTL as a 200 HTTP response when this feature is enabled.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          },
+          {
+            "name": "POST responses",
+            "comments": "Define when HTTP POST requests should be cached. You should enable it under a criteria match.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          },
+          {
+            "name": "GraphQL",
+            "criteria": [
+              {
+                "name": "path",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "MATCHES_ONE_OF",
+                  "normalize": false,
+                  "values": [
+                    "/graphql"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "graphqlCaching",
+                "options": {
+                  "enabled": false
+                }
+              }
+            ],
+            "comments": "Define when your GraphQL queries should be cached.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          },
+          {
+            "name": "Uncacheable objects",
+            "criteria": [
+              {
+                "name": "cacheability",
+                "options": {
+                  "matchOperator": "IS_NOT",
+                  "value": "CACHEABLE"
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "downstreamCache",
+                "options": {
+                  "behavior": "BUST"
+                }
+              }
+            ],
+            "comments": "Configure the default client caching behavior for uncacheable content at the edge.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          }
+        ],
+        "comments": "Control the settings related to caching content at the edge and in the browser. As a result, fewer requests go to your origin, fewer bytes leave your data centers, and your assets are closer to your users.",
+        "criteriaMustSatisfy": "all",
+        "options": {}
+      },
+      {
+        "name": "Minimize payload",
+        "children": [
+          {
+            "name": "Compressible objects",
+            "criteria": [
+              {
+                "name": "contentType",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "matchWildcard": true,
+                  "values": [
+                    "application/*javascript*",
+                    "application/*json*",
+                    "application/*xml*",
+                    "application/text*",
+                    "application/vnd-ms-fontobject",
+                    "application/vnd.microsoft.icon",
+                    "application/x-font-opentype",
+                    "application/x-font-truetype",
+                    "application/x-font-ttf",
+                    "application/xmlfont/eot",
+                    "font/eot",
+                    "font/opentype",
+                    "font/otf",
+                    "image/svg+xml",
+                    "image/vnd.microsoft.icon",
+                    "image/x-icon",
+                    "text/*",
+                    "application/octet-stream*",
+                    "application/x-font-eot*",
+                    "font/ttf",
+                    "application/font-ttf",
+                    "application/font-sfnt",
+                    "application/x-tgif"
+                  ]
+                }
+              }
+            ],
+            "behaviors": [
+              {
+                "name": "gzipResponse",
+                "options": {
+                  "behavior": "ALWAYS"
+                }
+              }
+            ],
+            "comments": "Serve gzip compressed content for text-based formats.",
+            "criteriaMustSatisfy": "all",
+            "options": {}
+          }
+        ],
+        "comments": "Control the settings that reduce the size of the delivered content and decrease the number of bytes sent by your properties. This allows you to cut down the network overhead of your website or API.",
+        "criteriaMustSatisfy": "all",
+        "options": {}
+      }
+    ],
+    "comments": "The Default Rule template contains all the necessary and recommended behaviors. Rules are evaluated from top to bottom and the last matching rule wins.",
+    "variables": [
+      {
+        "name": "PMUSER_API_KEY_VALUE",
+        "value": "",
+        "description": "",
+        "hidden": false,
+        "sensitive": false
+      },
+      {
+        "name": "PMUSER_KEY_HEADER",
+        "value": "key_header",
+        "description": "",
+        "hidden": false,
+        "sensitive": false
+      },
+      {
+        "name": "PMUSER_UUID_FINAL",
+        "value": "",
+        "description": "Variable to hold UUID value",
+        "hidden": false,
+        "sensitive": false
+      }
+    ],
+    "advancedOverride": "\u003c!-- advanced tags --\u003e\n             \u003c!-- Generates UID as per version 4 standard --\u003e\n                        \u003c!-- Version 4 UUIDs have the form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx where x is any hexadecimal digit and y is one of 8, 9, a, or b --\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_PART_1\u003c/name\u003e\n                                \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003chexrand\u003e\n                                        \u003cbytes\u003e4\u003c/bytes\u003e\n                                    \u003c/hexrand\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_PART_2\u003c/name\u003e\n                                \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003chexrand\u003e\n                                        \u003cbytes\u003e2\u003c/bytes\u003e\n                                    \u003c/hexrand\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_PART_3\u003c/name\u003e\n                               \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003chexrand\u003e\n                                        \u003cbytes\u003e2\u003c/bytes\u003e\n                                    \u003c/hexrand\u003e\n                                    \u003csubstring\u003e\n                                        \u003cstart\u003e1\u003c/start\u003e\n                                        \u003cend\u003e-1\u003c/end\u003e\n                                    \u003c/substring\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_PART_4\u003c/name\u003e\n                               \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003chexrand\u003e\n                                        \u003cbytes\u003e2\u003c/bytes\u003e\n                                    \u003c/hexrand\u003e\n                                    \u003csubstring\u003e\n                                        \u003cstart\u003e1\u003c/start\u003e\n                                        \u003cend\u003e-1\u003c/end\u003e\n                                    \u003c/substring\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_PART_5\u003c/name\u003e\n                                \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003chexrand\u003e\n                                        \u003cbytes\u003e6\u003c/bytes\u003e\n                                    \u003c/hexrand\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003c!-- UID_RAND_89ab is used to select the y character of UID which can be 8,9,a or b--\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003eUID_RAND_89ab\u003c/name\u003e\n                                \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003ctransform\u003e\n                                    \u003crand\u003e\n                                        \u003cmin\u003e0\u003c/min\u003e\n                                        \u003cmax\u003e3\u003c/max\u003e\n                                    \u003c/rand\u003e\n                                \u003c/transform\u003e\n                            \u003c/assign:variable\u003e\n                            \u003cmatch:variable name=\"UID_RAND_89ab\" value=\"0\"\u003e\n                                \u003cassign:variable\u003e\n                                    \u003cname\u003eUID_SELECTED_CHAR\u003c/name\u003e\n                                    \u003cvalue\u003e8\u003c/value\u003e\n                                    \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003c/assign:variable\u003e\n                            \u003c/match:variable\u003e\n                            \u003cmatch:variable name=\"UID_RAND_89ab\" value=\"1\"\u003e\n                                \u003cassign:variable\u003e\n                                    \u003cname\u003eUID_SELECTED_CHAR\u003c/name\u003e\n                                    \u003cvalue\u003e9\u003c/value\u003e\n                                    \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003c/assign:variable\u003e\n                            \u003c/match:variable\u003e\n                            \u003cmatch:variable name=\"UID_RAND_89ab\" value=\"2\"\u003e\n                                \u003cassign:variable\u003e\n                                    \u003cname\u003eUID_SELECTED_CHAR\u003c/name\u003e\n                                    \u003cvalue\u003ea\u003c/value\u003e\n                                    \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003c/assign:variable\u003e\n                            \u003c/match:variable\u003e\n                            \u003cmatch:variable name=\"UID_RAND_89ab\" value=\"3\"\u003e\n                                \u003cassign:variable\u003e\n                                    \u003cname\u003eUID_SELECTED_CHAR\u003c/name\u003e\n                                    \u003cvalue\u003eb\u003c/value\u003e\n                                    \u003chidden\u003eon\u003c/hidden\u003e\n                                \u003c/assign:variable\u003e\n                            \u003c/match:variable\u003e\n                            \u003c!--Assemble all the UID parts to form the final UID value --\u003e\n                            \u003cassign:variable\u003e\n                                \u003cname\u003ePMUSER_UUID_FINAL\u003c/name\u003e\n                                \u003cvalue\u003e%(UID_PART_1)-%(UID_PART_2)-4%(UID_PART_3)-%(UID_SELECTED_CHAR)%(UID_PART_4)-%(UID_PART_5)\u003c/value\u003e\n                        \u003c/assign:variable\u003e\n\u003c!-- Add UUID Header to outgoing request to Origin --\u003e\n\u003cedgeservices:modify-outgoing-request.add-header\u003e\n    \u003cstatus\u003eon\u003c/status\u003e\n    \u003cname\u003eX-UUID\u003c/name\u003e\n    \u003cvalue\u003e%(PMUSER_UUID_FINAL)\u003c/value\u003e\n  \u003c/edgeservices:modify-outgoing-request.add-header\u003e\n\n        \u003ccomment:note value=\"turn on request body inspection\"/\u003e\n        \u003cedgeservices:inspect-request-body.status\u003eon\u003c/edgeservices:inspect-request-body.status\u003e\n        \u003cedgeservices:inspect-request-body.limit\u003e128KB\u003c/edgeservices:inspect-request-body.limit\u003e\n        \u003cedgeservices:inspect-request-body.free-body-early\u003eoff\u003c/edgeservices:inspect-request-body.free-body-early\u003e\n        \u003ccomment:note value=\"End Feature advanced\"/\u003e\n        \u003ccomment:note value=\"Start API Extraction ONLY for POST body requests and NOT for api-keys in a header\"/\u003e\n        \u003cmatch:request.header name=\"%(PMUSER_KEY_HEADER)\" result=\"false\"\u003e\n           \u003cmatch:variable name=\"AK_QUERY\" result=\"false\"\u003e\n            \u003cmatch:request.method result=\"true\" value=\"POST\"\u003e\n                \u003cmatch:metadata-stage value=\"client-request-body\"\u003e\n                    \u003cmatch:regex flags=\"s\" impl=\"re2\" regex=\"(.*)\" select=\"XML_PAIRS://apikey\" strict-err-check-re2=\"on\"\u003e\n                        \u003cassign:variable\u003e\n                            \u003cname\u003ePMUSER_API_KEY_VALUE\u003c/name\u003e\n                            \u003cvalue\u003e%(AK_SELECT)\u003c/value\u003e\n                        \u003c/assign:variable\u003e\n                    \u003c/match:regex\u003e\n                    \u003ccomment:note value=\"End API Extraction\"/\u003e\n                    \u003c!-- enable IPA processing to a different trees --\u003e\n                    \u003cmatch:request.header name=\"X-Akamai-Processing-Agent\" result=\"false\"\u003e\n                        \u003cmatch:variable name=\"AK_QUERY\" result=\"false\"\u003e\n                            \u003cedgeservices:processing-agent\u003e\n                                \u003cstatus\u003eon\u003c/status\u003e\n                                \u003clog-r-line\u003eon\u003c/log-r-line\u003e\n                                \u003curl\u003e%(AK_URL)?api_key=%(PMUSER_API_KEY_VALUE)\u003c/url\u003e\n                                \u003chost\u003efailover.dj.config.rapid.com.co\u003c/host\u003e\n                                \u003cauthenticate\u003eoff\u003c/authenticate\u003e\n                                \u003cpost-body/\u003e\n                            \u003c/edgeservices:processing-agent\u003e\n                        \u003c/match:variable\u003e\n                        \u003cmatch:variable name=\"AK_QUERY\"\u003e\n                            \u003cedgeservices:processing-agent\u003e\n                                \u003cstatus\u003eon\u003c/status\u003e\n                                \u003clog-r-line\u003eon\u003c/log-r-line\u003e\n                                \u003curl\u003e%(AK_URL)\u0026amp;api_key=%(PMUSER_API_KEY_VALUE)\u003c/url\u003e\n                                \u003chost\u003efailover.dj.config.rapid.com.co\u003c/host\u003e\n                                \u003cauthenticate\u003eoff\u003c/authenticate\u003e\n                                \u003cpost-body/\u003e\n                            \u003c/edgeservices:processing-agent\u003e\n                        \u003c/match:variable\u003e\n                    \u003c/match:request.header\u003e\n                \u003c/match:metadata-stage\u003e\n            \u003c/match:request.method\u003e\n          \u003c/match:variable\u003e\n        \u003c/match:request.header\u003e\n\n\u003c!-- Add APIkey Header to outgoing request to Origin --\u003e\n\u003cmatch:metadata-stage value=\"client-request\"\u003e\n\u003cedgeservices:modify-outgoing-request.add-header\u003e\n    \u003cstatus\u003eon\u003c/status\u003e\n    \u003cname\u003eapikey\u003c/name\u003e\n    \u003cvalue\u003e%(PMUSER_API_KEY_VALUE)\u003c/value\u003e\n  \u003c/edgeservices:modify-outgoing-request.add-header\u003e\n\u003c/match:metadata-stage\u003e\n\n\n\n        \u003c!-- Check what response we got from content server for IPA authorization request and set variables for later processing --\u003e\n        \u003cmatch:processing-agent-response host=\"failover.dj.config.rapid.com.co\"\u003e\n            \u003cmatch:response.status result=\"true\" value=\"401\"\u003e\n                \u003cassign:variable\u003e\n                    \u003cname\u003eDENY\u003c/name\u003e\n                    \u003cvalue\u003etrue\u003c/value\u003e\n                \u003c/assign:variable\u003e\n                \u003cassign:variable\u003e\n                    \u003cname\u003eSTS_CD\u003c/name\u003e\n                    \u003cvalue\u003e401\u003c/value\u003e\n                \u003c/assign:variable\u003e\n            \u003c/match:response.status\u003e\n            \u003cmatch:response.status result=\"true\" value=\"403\"\u003e\n                \u003cassign:variable\u003e\n                    \u003cname\u003eDENY\u003c/name\u003e\n                    \u003cvalue\u003etrue\u003c/value\u003e\n                \u003c/assign:variable\u003e\n                \u003cassign:variable\u003e\n                    \u003cname\u003eSTS_CD\u003c/name\u003e\n                    \u003cvalue\u003e403\u003c/value\u003e\n                \u003c/assign:variable\u003e\n            \u003c/match:response.status\u003e\n        \u003c/match:processing-agent-response\u003e\n        \u003c!-- Deny the client request for content if we got 401 response from origin for IPA authorization request --\u003e\n        \u003cmatch:metadata-stage value=\"ipa-response\"\u003e\n            \u003cmatch:variable name=\"DENY\" value=\"true\"\u003e\n                \u003cassign:extract-value\u003e\n                    \u003cvariable-name\u003eGWERR_FROM_IPA\u003c/variable-name\u003e\n                    \u003clocation\u003eIPA_Response_Header\u003c/location\u003e\n                    \u003clocation-id\u003edummy-header\u003c/location-id\u003e\n                \u003c/assign:extract-value\u003e\n            \u003c/match:variable\u003e\n            \u003c!-- Deny the request if API-GW/IPA is a auth deny --\u003e\n            \u003cmatch:variable name=\"DENY\" value=\"true\"\u003e\n                \u003cauth:acl.deny\u003eAPI-GW-Fail\u003c/auth:acl.deny\u003e\n            \u003c/match:variable\u003e\n            \u003c!-- add IPA response body  --\u003e\n            \u003cmatch:response.status result=\"true\" value=\"401\"\u003e\n                \u003cedgeservices:construct-abort-response\u003e\n                    \u003cstatus\u003eon\u003c/status\u003e\n                    \u003chttp-status\u003e401\u003c/http-status\u003e\n                    \u003cbody\u003e%(GWERR_FROM_IPA)\u003c/body\u003e\n                \u003c/edgeservices:construct-abort-response\u003e\n            \u003c/match:response.status\u003e\n            \u003cmatch:response.status result=\"true\" value=\"403\"\u003e\n                \u003cedgeservices:construct-abort-response\u003e\n                    \u003cstatus\u003eon\u003c/status\u003e\n                    \u003chttp-status\u003e403\u003c/http-status\u003e\n                    \u003cbody\u003e%(GWERR_FROM_IPA)\u003c/body\u003e\n                \u003c/edgeservices:construct-abort-response\u003e\n            \u003c/match:response.status\u003e\n        \u003c/match:metadata-stage\u003e",
+    "options": {}
+  }
+}

@@ -1,0 +1,7 @@
+#! /bin/bash
+FILE="country_code.csv"
+arr_record1=( $(tail -n +2 $FILE | cut -d ',' -f1) )
+echo "[${arr_record1[@]}]" > output_for_terraform_new.txt
+#sed 's/^\|$/"/g' output_for_terraform_new.txt | paste -sd
+#sed 's/.*/"&"/' output_for_terraform_new.txt | paste -sd
+awk '{printf "\"%s\", ", $0}' output_for_terraform_new.txt

@@ -1,7 +1,8 @@
 # aws-akamai
 
- **This repo is provisioned to store terraform examples to build a website on AWS + using Akamai as CDN and Security platform**
+ This repo has been provisioned to store terraform examples for building a website on AWS. Site will then be delivered securely using Akamai CDN and Security platform
 
+Below is the high level architecture for end goal.
 
 ![Site Architecture](Architecture_Diagram.jpg)
 
@@ -12,6 +13,8 @@
  3. About Terraform - https://www.terraform.io/
  4. Terraform - Akamai provider https://registry.terraform.io/providers/akamai/akamai/latest/docs
  5. Terraform - AWS provider https://registry.terraform.io/providers/hashicorp/aws/latest
+
+
 
 **Detailed blogpost on how to provision a website on AWS and delivery it securely via. Akamai Edge Platform**
 
